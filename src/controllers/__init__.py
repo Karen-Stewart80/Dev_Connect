@@ -5,5 +5,6 @@ from controllers.profileimage_controller import profile_images
 registerable_controllers = [
     auth,
     profiles,
-    profile_images
+    profile_images,
+    posts
 ]
