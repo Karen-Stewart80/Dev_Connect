@@ -9,7 +9,7 @@ class Profiles(db.Model):
     lname = db.Column(db.String(), nullable=False)
     account_active = db.Column(db.Boolean(), default = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    
+    profile_image = db.relationship("ProfileImage", backref="profile", uselist=False)
     github = db.Column(db.String())
 
 def __repr__(seelf):
