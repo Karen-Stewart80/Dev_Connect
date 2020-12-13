@@ -1,4 +1,5 @@
 from main import db
+from models.ProfileImage import ProfileImage
 
 class Profiles(db.Model):
     __tablename__ = 'profiles'
