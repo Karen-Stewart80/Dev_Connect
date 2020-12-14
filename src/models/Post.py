@@ -11,8 +11,8 @@ class Post(db.Model):
     back_end = db.Column(db.Boolean(), nullable=False)
     full_stack = db.Column(db.Boolean(), nullable=False)
     completed = db.Column(db.Boolean(), nullable=False)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.id"), nullable=False)
-    post_github = db.Column(db.String())
+    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
+    post_github = db.Column(db.String(), nullable=False)
 
 def __repr__(seelf):
     return f"<Profile {self.post}>"

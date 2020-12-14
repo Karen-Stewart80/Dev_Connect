@@ -5,24 +5,23 @@ from main import db
 from models.Users import Users
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
-from model.Post import Post
-
+from models.Post import Post
 
 posts = Blueprint("post", __name__, url_prefix="/post")
 
-@post.route("/", methods=["GET"])
+@posts.route("/", methods=["GET"])
 def post_index():
     post = Post.query.all()
     return jsonify(post_schema.dump(post))
 
 
-@post.route("/", methods=["POST"])
+@posts.route("/", methods=["POST"])
 @jwt_required
 @verify_user
 def post_create(user=None):
     user_id=get_jwt_identity()
     post_fields = post_schema.load(request.json)
-    post=Post.query.get(profile_id)
+    profile=Profiles.query.get(user_id)
 
     new_post = Post()
     new_post.post_name = post_fields["post_name"]
@@ -34,12 +33,12 @@ def post_create(user=None):
     new_post.completed = post_fields["completed"]
     new_post.post_github = post_fields["post_github"]
 
-    user.profile.append(new_user)
+    profile.post.append(new_post)
 
-    db.session.add(new_user)
+    db.session.add(new_post)
     db.session.commit()
 
-    return jsonify(profile_schema.dump(new_user))
+    return jsonify(post_schema.dump(new_post))
 
 # @profiles.route("/<string:username>", methods=["GET"])
 # def profiles_show(username):
