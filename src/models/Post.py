@@ -14,5 +14,5 @@ class Post(db.Model):
     profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
     post_github = db.Column(db.String(), nullable=False)
 
-def __repr__(seelf):
-    return f"<Profile {self.post}>"
+def __repr__(self):
+    return f"<Post {self.post}>"

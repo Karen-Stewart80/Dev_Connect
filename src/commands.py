@@ -2,6 +2,7 @@ from main import db
 from flask import Blueprint
 
 
+
 db_commands = Blueprint("db-custom", __name__)
 
 @db_commands.cli.command("create")
@@ -21,8 +22,12 @@ def seed_db():
     from faker import Faker
     from models.Users import Users
     from main import bcrypt
+    from models.Post import Post
+    import random
 
     faker = Faker()
+    profiles = []
+    true_or_false = [True, False]
 
     for i in range(10):
         user = Users()
@@ -31,6 +36,8 @@ def seed_db():
         db.session.add(user)
         #accounts.append(user)
     db.session.commit()
+
+
 
     for i in range(10):
         profile = Profiles()
@@ -41,6 +48,21 @@ def seed_db():
         profile.user_id = i+1
         profile.github=faker.name()
         db.session.add(profile)
+        profiles.append(profile)
     db.session.commit()
 
+    for i in range(30):
+        new_post = Post()
+        new_post.post_name = faker.name()
+        new_post.post_description = faker.catch_phrase()
+        new_post.account_active = random.choice(true_or_false)
+        new_post.front_end = random.choice(true_or_false)
+        new_post.back_end = random.choice(true_or_false)
+        new_post.full_stack = random.choice(true_or_false)
+        new_post.completed = random.choice(true_or_false)
+        new_post.post_github = faker.url()
+        new_post.profile_id = random.choice(profiles).profileid
+        db.session.add(new_post)
+    db.session.commit()
+        
     print("Tables seeded")

@@ -12,7 +12,16 @@ posts = Blueprint("post", __name__, url_prefix="/post")
 @posts.route("/", methods=["GET"])
 def post_index():
     post = Post.query.all()
-    return jsonify(post_schema.dump(post))
+    return jsonify(posts_schema.dump(post))
+
+
+@posts.route("/<string:front_end>", methods=["GET"])
+
+def post_front_end(front_end):
+    query = db.session.query(Post)
+    query = query.filter(Post.front_end == True)
+    posts = query.all()
+    return jsonify(posts_schema.dump(posts))
 
 
 @posts.route("/", methods=["POST"])
