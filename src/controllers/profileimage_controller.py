@@ -9,7 +9,11 @@ profile_images = Blueprint('profile_images', __name__, url_prefix="/profiles/<in
 @profile_images.route("/", methods=["POST"])
 @jwt_required
 def profile_image_create(profile_id):
-    pass
+    if "image" in request.files:
+        image = request.files["image"]
+        image.save("uploaded_images/file_1")
+        return ("", 200)
+    return abort("400", description="No image")
 
 @profile_images.route("/<int:id>", methods=["GET"])
 def profile_image_show(profile_id, id):
@@ -19,3 +23,4 @@ def profile_image_show(profile_id, id):
 @jwt_required
 def profile_image_delete(profile_id, id):
     pass
+

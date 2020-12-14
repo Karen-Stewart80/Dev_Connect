@@ -29,6 +29,9 @@ def profiles_create(user=None):
     new_user.lname = profile_fields["lname"]
     new_user.account_active = profile_fields["account_active"]
     new_user.github = profile_fields["github"]
+    new_user.front_end = profile_fields["front_end"]
+    new_user.back_end = profile_fields["back_end"]
+    new_user.full_stack = profile_fields["full_stack"]
 
     user.profile.append(new_user)
 

@@ -47,6 +47,9 @@ def seed_db():
         profile.account_active=faker.boolean()
         profile.user_id = i+1
         profile.github=faker.name()
+        profile.front_end = random.choice(true_or_false)
+        profile.back_end = random.choice(true_or_false)
+        profile.full_stack = random.choice(true_or_false)
         db.session.add(profile)
         profiles.append(profile)
     db.session.commit()

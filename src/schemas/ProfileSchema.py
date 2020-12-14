@@ -12,6 +12,9 @@ class ProfileSchema(ma.SQLAlchemyAutoSchema):
     account_active = ma.Boolean(required=True)
     github = ma.String(required=False, validate=Length(min=1))
     user = ma.Nested(UsersSchema)
+    front_end = ma.Boolean(required=True)
+    back_end = ma.Boolean(required=True)
+    full_stack = ma.Boolean(required=True)
 
 profile_schema = ProfileSchema()
 profiles_schema = ProfileSchema(many=True)
