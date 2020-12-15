@@ -5,6 +5,7 @@ from main import db
 from models.Users import Users
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
+from models.Post import Post
 
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
@@ -14,6 +15,17 @@ def profiles_index():
     profiles = Profiles.query.all()
     return jsonify(profiles_schema.dump(profiles))
 
+@profiles.route("/dev", methods=["GET"])
+#@jwt_required
+#@verify_user
+def profiles_index_dev():
+    #profiles = Profiles.query.all()
+    #profile = Profiles.query.filter_by(username = username, user_id=user.id).all()
+    profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
+    #profile = profiles.filter_by(username = username, user_id=user.id).all()
+    #return jsonify(profiles_schema.dump(profiles))
+    #print(profiles)
+    return str(profiles)
 
 @profiles.route("/", methods=["POST"])
 @jwt_required
