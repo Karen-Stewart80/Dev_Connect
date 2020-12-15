@@ -23,8 +23,8 @@ def messages_create(user=None):
     messages_fields = message_schema.load(request.json)
     messages=Messages.query.get(user_id)
 
-    new_message = Message()
-    new_message.messages= message_fields["messages_name"]
+    new_message = Messages()
+    new_message.messages= messages_fields["messages"]
    
     db.session.add(new_message)
     db.session.commit()
