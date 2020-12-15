@@ -1,6 +1,7 @@
 from main import db
 from models.ProfileImage import ProfileImage
 from models.Post import Post
+from models.Messages import Messages
 
 class Profiles(db.Model):
     __tablename__ = 'profiles'
@@ -17,6 +18,7 @@ class Profiles(db.Model):
     front_end = db.Column(db.Boolean(), nullable=False)
     back_end = db.Column(db.Boolean(), nullable=False)
     full_stack = db.Column(db.Boolean(), nullable=False)
+    messages = db.relationship("Messages", backref="profile")
 
-def __repr__(seelf):
+def __repr__(self):
     return f"<Profile {self.username}>"

@@ -1,17 +1,17 @@
 from main import db
-from models.Profiles import Profiles
-from models.Post import Post
-import datetime
+# from models.Profiles import Profiles
+# from models.Post import Post
+from datetime import datetime
 
 class Messages(db.Model):
     __tablename__ = 'messages'
 
     message_id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey("post.postid"), nullable=False)
-    project_profile_id = db.Column(db.Integer, db.ForeignKey("post.profile_id", nullable=False))
-    profile_id = db.Column(db.Integer, db.ForeignKey("profile.profileid", nullable=False))
+    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
     messages = db.Column(db.String(), nullable=False)
-    timestamp = db.Column(Datetime, default=datetime.datetime.utcnow)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
 
 
 def __repr__(self):
