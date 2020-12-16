@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, render_template, url_for
 from schemas.PostSchema import post_schema, posts_schema
 from models.Profiles import Profiles
 from main import db
@@ -13,7 +13,8 @@ posts = Blueprint("post", __name__, url_prefix="/post")
 @posts.route("/", methods=["GET"])
 def post_index():
     post = Post.query.all()
-    return jsonify(posts_schema.dump(post))
+    #return jsonify(posts_schema.dump(post))
+    return render_template("home_page.html", posts= post)
 
 
 @posts.route("/<string:account_active>", methods=["GET"])
