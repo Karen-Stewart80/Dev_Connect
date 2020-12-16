@@ -1,6 +1,7 @@
 import unittest
 from main import create_app, db
 from models.Profiles import Profiles
+from models.Users import Users
 
 class TestProfiles(unittest.TestCase):
     @classmethod
@@ -11,16 +12,13 @@ class TestProfiles(unittest.TestCase):
         cls.client = cls.app.test_client()
         db.create_all()
         runner = cls.app.test_cli_runner()
-        runner.invoke(args=["db", "seed"])
+        runner.invoke(args=["db-custom", "seed"])
 
     @classmethod
     def tearDown(cls):
         db.session.remove()
         db.drop_all()
         cls.app_context.pop()
-
-
-
 
     def test_profiles_index(self):
         response= self.client.get("/profiles/")
@@ -30,19 +28,38 @@ class TestProfiles(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(data, list)
 
-    def test_profiles_create(self):
-        response = self.client.post("/profiles/", json={
-            "email": "Test Email",
-            "fname": "Test Name",
-            "github": "Test Github",
-            "lname": "Test Name",
-            "profile_pic":"Test Profile Pic",
-            "username": "Test UserName",
-            "userpass":"Test Password",
-            "account_active":"True"
-        })
 
-        data = response.get_json()
+
+    def test_profiles_create(self):
+        response = self.client.post("/auth/register",                   
+        json = {                                                        
+            "email": "test1@test.com",
+            "password": "123456"
+
+        })
+        response = self.client.post("/auth/login",                      
+        json = {              
+            "email": "test1@test.com",
+            "password": "123456"
+        })                    
+        data = response.get_json()                                      
+        headers_data= {                                                 
+            'Authorization': f"Bearer {data['token']}"
+        }
+        data = {                                                       
+            "username" : "test_username", 
+            "fname" : "test", 
+            "lname" : "test",
+            "account_active": "True",
+            "github": "True",
+            "back_end": "True",
+            "full_stack": "True",
+            "front_end": "True"
+        }
+       
+        response = self.client.post("/profiles/",                       
+        json = data,                                                    
+        headers = headers_data)  
 
         self.assertEqual(response.status_code, 200)
 
@@ -53,7 +70,35 @@ class TestProfiles(unittest.TestCase):
         self.assertIsNotNone(profiles)
 
     def test_profiles_delete(self):
-        profiles = Profiles.query.first()
+         response = self.client.post("/auth/register",                   
+        json = {                                                        
+            "email": "test1@test.com",
+            "password": "123456"
+
+        })
+        response = self.client.post("/auth/login",                      
+        json = {              
+            "email": "test1@test.com",
+            "password": "123456"
+        })                    
+        data = response.get_json()                                      
+        headers_data= {                                                 
+            'Authorization': f"Bearer {data['token']}"
+        }
+        data = {                                                       
+            "username" : "test_username", 
+            "fname" : "test", 
+            "lname" : "test",
+            "account_active": "True",
+            "github": "True",
+            "back_end": "True",
+            "full_stack": "True",
+            "front_end": "True"
+        }
+
+        profile = Profiles.query.filter_by(username=test_username).first()
+
+        #profiles = Profiles.query.first()
 
         response = self.client.delete(f"/profiles/{profiles.userid}")
         data = response.get_json()
