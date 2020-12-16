@@ -6,6 +6,7 @@ from models.Users import Users
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from models.Post import Post
+from sqlalchemy.sql import func, label
 
 posts = Blueprint("post", __name__, url_prefix="/post")
 
@@ -15,13 +16,15 @@ def post_index():
     return jsonify(posts_schema.dump(post))
 
 
-@posts.route("/<string:front_end>", methods=["GET"])
+@posts.route("/<string:account_active>", methods=["GET"])
 
-def post_front_end(front_end):
-    query = db.session.query(Post)
-    query = query.filter(Post.front_end == True)
-    posts = query.all()
-    return jsonify(posts_schema.dump(posts))
+def post_front_end(account_active):
+    query = db.session.query(Post.account_active, label("active", func.count(Post.postid))).filter(Post.completed == False).group_by(Post.account_active).all()
+    #return jsonify(posts_schema.dump(Post))
+    # query = query.filter(Post.front_end == True)
+    # posts = query.all()
+    return jsonify(query)
+
 
 
 @posts.route("/", methods=["POST"])

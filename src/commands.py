@@ -77,6 +77,7 @@ def seed_db():
         new_message.profile_id = random.choice(profiles).profileid
         new_message.messages = faker.catch_phrase()
         new_message.timestamp = faker.date_between(start_date = "-1y", end_date = "+1y")
-
+        db.session.add(new_message)
     db.session.commit()
+
     print("Tables seeded")
