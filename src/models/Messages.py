@@ -7,8 +7,8 @@ class Messages(db.Model):
     __tablename__ = 'messages'
 
     message_id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, db.ForeignKey("post.postid"), nullable=False)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.postid"), nullable=True)
+    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profileid"), nullable=True)
     messages = db.Column(db.String(), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 

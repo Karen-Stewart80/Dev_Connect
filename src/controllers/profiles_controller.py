@@ -6,9 +6,57 @@ from models.Users import Users
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.auth_services import verify_user
 from models.Post import Post
+from models.Messages import Messages
+from models.ProfileImage import ProfileImage
+from schemas.MessagesSchema import messages_schema
+from schemas.PostSchema import posts_schema
+from schemas.UsersSchema import users_schema
+from schemas.ProfileImageSchema import profiles_image_schema
+
+
 
 
 profiles = Blueprint("profiles", __name__, url_prefix="/profiles")
+
+tables = ["messages", "profile_images", "profiles", "post", "users"]
+schemas = [messages_schema, profiles_schema, profiles_image_schema, users_schema, posts_schema]
+
+
+
+
+@profiles.route("dump/all/<int:id>", methods=["GET"])
+@jwt_required
+@verify_user
+def profile_dump(user, id):
+
+    profile = db.session.query(Profiles).filter(Profiles.admin == True).filter_by(profileid = id, user_id=user.id).first()
+
+    
+
+
+    if not profile:
+        return abort(400, description="Unauthorised to complete")
+    i=0
+    try:
+        os.remove("backup/backup.json")
+        print("file successfully deleted")
+    except:
+        print("file does not exist")
+
+
+    for table in tables:
+        
+        query = db.engine.execute(f'SELECT * FROM {table}')
+        data = ((schemas[i]).dump(query))
+
+        data = json.dumps(data)
+        i+=1
+    
+        file = open("backup/backup.json", "a")
+        file.write(data)
+        file.close()
+
+    return "Data backed up"
 
 @profiles.route("/", methods=["GET"])
 def profiles_index():
@@ -16,16 +64,16 @@ def profiles_index():
     return jsonify(profiles_schema.dump(profiles))
 
 @profiles.route("/dev", methods=["GET"])
-#@jwt_required
-#@verify_user
+
 def profiles_index_dev():
-    #profiles = Profiles.query.all()
-    #profile = Profiles.query.filter_by(username = username, user_id=user.id).all()
+   
     profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
-    #profile = profiles.filter_by(username = username, user_id=user.id).all()
-    #return jsonify(profiles_schema.dump(profiles))
-    #print(profiles)
-    return str(profiles)
+    print(profiles)
+    
+    listy_list = []
+    for result in profiles:
+       listy_list.append(f"Name: {result[0].username} Description: {result[1].post_description}")
+    return jsonify(listy_list)
 
 @profiles.route("/", methods=["POST"])
 @jwt_required
@@ -89,3 +137,6 @@ def profiles_delete(username, user=None):
     db.session.commit()
 
     return jsonify(profile_schema.dump(profile))
+
+
+
