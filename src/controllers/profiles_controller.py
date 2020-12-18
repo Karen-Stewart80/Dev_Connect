@@ -24,15 +24,12 @@ schemas = [messages_schema, profiles_schema, profiles_image_schema, users_schema
 
 
 
-@profiles.route("dump/all/<int:id>", methods=["GET"])
+@profiles.route("/dump/all/<int:id>", methods=["GET"])
 @jwt_required
 @verify_user
 def profile_dump(user, id):
 
     profile = db.session.query(Profiles).filter(Profiles.admin == True).filter_by(profileid = id, user_id=user.id).first()
-
-    
-
 
     if not profile:
         return abort(400, description="Unauthorised to complete")
@@ -68,12 +65,49 @@ def profiles_index():
 def profiles_index_dev():
    
     profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
-    print(profiles)
     
     listy_list = []
     for result in profiles:
        listy_list.append(f"Name: {result[0].username} Description: {result[1].post_description}")
     return jsonify(listy_list)
+
+
+
+@profiles.route("/back_end", methods=["GET"])
+
+def profiles_back_end():
+   
+    profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
+   
+    listy_list = []
+    for result in profiles:
+       listy_list.append(f"Name: {result[0].username} Backend: {result[1].back_end}")
+    return jsonify(listy_list)
+
+
+@profiles.route("/front_end", methods=["GET"])
+
+def profiles_front_end():
+   
+    profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
+
+
+    listy_list = []
+    for result in profiles:
+       listy_list.append(f"Name: {result[0].username} Front_end: {result[1].front_end}")
+    return jsonify(listy_list)
+
+@profiles.route("/full_stack", methods=["GET"])
+
+def profiles_full_stack():
+   
+    profiles = db.session.query(Profiles, Post).join(Post, Profiles.profileid == Post.profile_id).all()
+   
+    listy_list = []
+    for result in profiles:
+       listy_list.append(f"Name: {result[0].username} Full_stack: {result[1].full_stack}")
+    return jsonify(listy_list)
+
 
 @profiles.route("/", methods=["POST"])
 @jwt_required
@@ -92,6 +126,7 @@ def profiles_create(user=None):
     new_user.front_end = profile_fields["front_end"]
     new_user.back_end = profile_fields["back_end"]
     new_user.full_stack = profile_fields["full_stack"]
+    new_user.admin = profile_fields["admin"]
 
     user.profile.append(new_user)
 
@@ -107,18 +142,19 @@ def profiles_show(username):
     return jsonify(profile_schema.dump(profile))
 
 @profiles.route("/<string:username>", methods=["PUT", "PATCH"])
-@jwt_required
-@verify_user
-def profiles_update(username, user=None):
+#@jwt_required
+#@verify_user
+def profiles_update(username):
     #Update a user
-    profile = Profiles.query.filter_by(username = username, user_id=user.id)
+    profile = Profiles.query.filter_by(username = username)
     profile_fields = profile_schema.load(request.json)
+    print(profile)
 
-    if profile.count() != 1:
-        return abort(401, description="Unauthorised to update this user")
+    if not profile:
+        return abort(401, description="Unauthorised to update")
     profile.update(profile_fields)
 
-
+    
     db.session.commit()
 
     return jsonify(profile_schema.dump(profile[0]))

@@ -16,6 +16,8 @@ class ProfileSchema(ma.SQLAlchemyAutoSchema):
     front_end = ma.Boolean(required=True)
     back_end = ma.Boolean(required=True)
     full_stack = ma.Boolean(required=True)
+    admin = ma.Boolean()
+
 
 profile_schema = ProfileSchema()
 profiles_schema = ProfileSchema(many=True)
