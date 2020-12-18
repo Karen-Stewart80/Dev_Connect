@@ -1,4 +1,6 @@
 from flask import Blueprint, request, jsonify, abort
+import json 
+import os
 from schemas.ProfileSchema import profile_schema, profiles_schema
 from models.Profiles import Profiles
 from main import db
@@ -141,12 +143,12 @@ def profiles_show(username):
     profile = Profiles.query.filter_by(username = username).first()
     return jsonify(profile_schema.dump(profile))
 
-@profiles.route("/<string:username>", methods=["PUT", "PATCH"])
-#@jwt_required
-#@verify_user
-def profiles_update(username):
+@profiles.route("/<int:id>", methods=["PUT", "PATCH"])
+@jwt_required
+@verify_user
+def profiles_update(user, id):
     #Update a user
-    profile = Profiles.query.filter_by(username = username)
+    profile = Profiles.query.filter_by(profileid = id, user_id=user.id)
     profile_fields = profile_schema.load(request.json)
     print(profile)
 

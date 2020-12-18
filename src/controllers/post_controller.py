@@ -14,8 +14,8 @@ posts = Blueprint("post", __name__, url_prefix="/post")
 @posts.route("/", methods=["GET"])
 def post_index():
     post = db.session.query(Post).order_by(Post.post_name).all()
-    return jsonify(posts_schema.dump(post))
-    #return render_template("home_page.html", posts= post)
+    #return jsonify(posts_schema.dump(post))
+    return render_template("home_page.html", posts= post)
 
 
 @posts.route("/<string:account_active>", methods=["GET"])
