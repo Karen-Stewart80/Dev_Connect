@@ -63,4 +63,21 @@ Time sensitive JSON Web Tokens(JWT)are used for performing actions and logging i
 Object Relations-Mappers(ORM) ensures user input is sanitized and checked, before storing it in the database and helps prevent accidental or malicious code injection. Utilising datatypes and having specific field requirements not only ensures that data is inputted correctly but also provides protection against opportunist attacks. 
 
 
+### Professional, ethical and legal obligations as a developer
+
+Professional obligations - Clarifying the requirements for the project, developing a realistic project time line and comprehensive task list is imperative to project success. Trello board will assist in outlining the comprehensive tasks with a 'to do', 'doing' and 'completed' task table. Checkpoints will be given so that tasks will be completed on time and as reminder to use testing and deployment of the project using continuous integration and continuous deployment. This ensures testing and maintenance is regularly done and allows bugs to be eliminated during the project development process. CICD pipeline allows developers to continually develop, test and deploy improvements.
+
+Ethical obligations - The project stores sensitive user data and images, and therefore will be protected in private secure servers. User's information and images will also only be utilised for the purpose of the app and not be accessed, given or sold to other individuals or organisations. There will also be a User Terms and Conditions document, ensuring users abide by these and other conditions, such as ensuring messaging between developers is only for the purpose described and no inappropriate, sexual, drug or offensive material is to put on profiles, posts or messages. Support for users will be available to ensure any breaches of conditions are handled promptly and should a user or support, delete or modify their profile or post, it will be permanently deleted.
+
+Legal obligations - The project will be subject to a confidentiality agreement so those funding the project and developers are protected from others taking or copying the project. 
+Ensure there is mockup/wireframe of project and functionality, as evidence of idea and proving ownership to protect from Copyright laws.
+An App Developer Contract will be used to show ownership of the app, timeline, expectations and costs.
+Protecting the app IP with trademark registration to have formal Intellectual Property protection.
+A Privacy Policy will ensure private information, given in confidence will be protected and outline responsibilities for the protection of that information.
+The Terms and Conditions policy will ensure users must abide by ethical terms as described above, as well as other conditions in order to use the app.
+
+
+
+
+
  
