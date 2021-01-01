@@ -50,7 +50,17 @@ Copy the JWT token generated and perform actions. This is the admin user able to
 Code will be pushed to Github repository. Unittest will run tests.
 
 
+### Handling the privacy of user data and security features
 
+Hashing passwords makes system breaches and attacks less successful. Passwords will be hashed to make hacking more complicated and time consuming for the attacker and provide more security for the user.
+
+Amazon Web Services (AWS)offer secure services to store and run data. Running flask on an EC2 server will allow access to the database stored on AWS Virtual Private Cloud. This adds security and ensures only those with permissions can access the database through the NAT gateway. 
+
+Nginx, a secure webserver utilising HTTPS ensuring connection is secure and to make sure that data is encrypted and protected while transferring TLS is used.
+
+Time sensitive JSON Web Tokens(JWT)are used for performing actions and logging in.
+
+Object Relations-Mappers(ORM) ensures user input is sanitized and checked, before storing it in the database and helps prevent accidental or malicious code injection. Utilising datatypes and having specific field requirements not only ensures that data is inputted correctly but also provides protection against opportunist attacks. 
 
 
  
